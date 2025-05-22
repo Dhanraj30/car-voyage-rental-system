@@ -1,73 +1,115 @@
-# Welcome to your Lovable project
 
-## Project info
+# Car Rental System
 
-**URL**: https://lovable.dev/projects/b989bf73-5a29-48f9-b286-163abfb88855
+A complete car rental management system with FastAPI backend, ReactJS frontend, and automated SDK generation.
 
-## How can I edit this code?
+## Features
 
-There are several ways of editing your application.
+- 🚗 Browse and filter available cars
+- 📅 Book cars for specific date ranges
+- 🔄 Cancel existing rentals
+- 🔧 Admin interface to add new cars to the fleet
+- 📊 Availability validation to prevent double bookings
+- 🔌 Auto-generated Python SDK for API integration
 
-**Use Lovable**
+## Technology Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/b989bf73-5a29-48f9-b286-163abfb88855) and start prompting.
+- **Backend**: FastAPI with SQLite database
+- **Frontend**: React with Tailwind CSS and shadcn/ui components
+- **SDK**: Auto-generated Python client using OpenAPI Generator
+- **Testing**: Pytest for backend unit tests
+- **Automation**: Shell scripts for setup and execution
 
-Changes made via Lovable will be committed automatically to this repo.
+## Directory Structure
 
-**Use your preferred IDE**
-
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
-
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
-
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
-
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
-
-# Step 3: Install the necessary dependencies.
-npm i
-
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+```
+car-rental-system/
+├── backend/                # FastAPI application
+│   ├── database/           # SQLite database and SQL scripts
+│   ├── main.py             # Main application entry point
+│   ├── models.py           # SQLAlchemy models
+│   ├── schemas.py          # Pydantic schemas
+│   ├── database.py         # Database connection
+│   └── test_main.py        # Unit tests
+├── src/                    # React frontend
+│   ├── components/         # React components
+│   ├── services/           # API service layer
+│   ├── types/              # TypeScript type definitions
+│   └── pages/              # Page components
+├── car_rental_sdk/         # Generated Python SDK
+├── setup.sh                # Setup script
+├── run.sh                  # Execution script
+├── generate_sdk.sh         # SDK generation script
+└── test_sdk.py             # SDK usage example
 ```
 
-**Edit a file directly in GitHub**
+## Getting Started
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+### Prerequisites
 
-**Use GitHub Codespaces**
+- Python 3.8 or higher
+- Node.js and npm
+- SQLite3 (optional, for direct database manipulation)
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+### Installation
 
-## What technologies are used for this project?
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/yourusername/car-rental-system.git
+   cd car-rental-system
+   ```
 
-This project is built with:
+2. Run the setup script:
+   ```bash
+   chmod +x setup.sh
+   ./setup.sh
+   ```
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### Running the Application
 
-## How can I deploy this project?
+1. Start both the backend and frontend with a single command:
+   ```bash
+   chmod +x run.sh
+   ./run.sh
+   ```
 
-Simply open [Lovable](https://lovable.dev/projects/b989bf73-5a29-48f9-b286-163abfb88855) and click on Share -> Publish.
+2. Access the application:
+   - Frontend: http://localhost:8080
+   - API Documentation: http://localhost:8000/docs
 
-## Can I connect a custom domain to my Lovable project?
+### Generating the SDK
 
-Yes, you can!
+1. Make sure the backend is running
+2. Execute the SDK generation script:
+   ```bash
+   chmod +x generate_sdk.sh
+   ./generate_sdk.sh
+   ```
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+3. Test the SDK:
+   ```bash
+   python test_sdk.py
+   ```
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/tips-tricks/custom-domain#step-by-step-guide)
+## API Endpoints
+
+| Method | Endpoint | Description |
+|--------|----------|-------------|
+| GET | /cars/ | List all cars |
+| POST | /cars/ | Add a new car |
+| GET | /cars/{car_id} | Get car details |
+| POST | /cars/{car_id}/rent | Rent a car |
+| DELETE | /rentals/{rental_id} | Cancel a rental |
+
+## Running Tests
+
+To run the backend tests:
+
+```bash
+cd backend
+pytest test_main.py -v
+```
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
