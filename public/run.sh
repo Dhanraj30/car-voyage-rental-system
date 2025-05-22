@@ -4,6 +4,12 @@
 # Car Rental System Execution Script
 echo "🚗 Starting Car Rental System..."
 
+# Load environment variables
+if [ -f .env ]; then
+    echo "Loading environment variables from .env file..."
+    export $(grep -v '^#' .env | xargs)
+fi
+
 # Check if the backend directory exists
 if [ ! -d "backend" ]; then
     echo "Error: Backend directory not found. Please run setup.sh first."
@@ -20,7 +26,7 @@ fi
 # Start backend in the background
 echo "Starting FastAPI backend..."
 cd backend
-uvicorn main:app --reload --host 0.0.0.0 --port 8000 &
+uvicorn main:app --reload --host ${API_HOST:-0.0.0.0} --port ${API_PORT:-8000} &
 BACKEND_PID=$!
 cd ..
 
@@ -30,7 +36,7 @@ sleep 3
 
 # Start frontend
 echo "Starting React frontend..."
-npm run dev &
+npm run dev -- --port ${FRONTEND_PORT:-8080} &
 FRONTEND_PID=$!
 
 # Function to handle script termination
@@ -44,9 +50,9 @@ cleanup() {
 trap cleanup SIGINT SIGTERM
 
 echo "✅ Car Rental System is running!"
-echo "Backend: http://localhost:8000"
-echo "Frontend: http://localhost:8080"
-echo "API Documentation: http://localhost:8000/docs"
+echo "Backend: http://localhost:${API_PORT:-8000}"
+echo "Frontend: http://localhost:${FRONTEND_PORT:-8080}"
+echo "API Documentation: http://localhost:${API_PORT:-8000}/docs"
 echo "Press Ctrl+C to stop all services"
 
 # Keep the script running

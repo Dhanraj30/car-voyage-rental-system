@@ -1,0 +1,14 @@
+
+// This is a temporary file to document the fix needed in RentalForm.tsx
+// The error is: Property 'click' does not exist on type 'Element'
+
+// Find the line with the error (around line 84) that looks like:
+// document.querySelector('.react-datepicker__tab-loop button.react-datepicker__navigation--next')?.click();
+
+// Replace it with:
+// const nextButton = document.querySelector('.react-datepicker__tab-loop button.react-datepicker__navigation--next');
+// if (nextButton && nextButton instanceof HTMLElement) {
+//   nextButton.click();
+// }
+
+// This properly typecasts the element to HTMLElement which has the click() method

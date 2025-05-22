@@ -1,8 +1,28 @@
-
 #!/bin/bash
 
 # Car Rental System Setup Script
 echo "🚗 Setting up Car Rental System..."
+
+# Create .env file if it doesn't exist
+if [ ! -f .env ]; then
+    echo "Creating .env file with default configuration..."
+    cat > .env << EOL
+# Database configuration
+DATABASE_TYPE=sqlite
+DATABASE_PATH=database/car_rental.db
+
+# API configuration
+API_HOST=0.0.0.0
+API_PORT=8000
+
+# Frontend configuration
+FRONTEND_PORT=8080
+
+# Security
+SECRET_KEY=your_secret_key_here_change_this_in_production
+EOL
+    echo ".env file created with default values."
+fi
 
 # Create virtual environment
 echo "Creating Python virtual environment..."
@@ -17,7 +37,7 @@ fi
 
 # Install Python dependencies
 echo "Installing Python dependencies..."
-pip install fastapi uvicorn sqlalchemy pydantic python-multipart pydantic-settings alembic pytest
+pip install fastapi uvicorn sqlalchemy pydantic python-multipart pydantic-settings alembic pytest python-dotenv
 
 # Initialize database
 echo "Setting up database..."

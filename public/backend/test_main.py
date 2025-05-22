@@ -1,9 +1,13 @@
-
 import pytest
 from fastapi.testclient import TestClient
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from sqlalchemy.pool import StaticPool
+import os
+from dotenv import load_dotenv
+
+# Load environment variables for testing
+load_dotenv()
 
 from database import Base
 from main import app, get_db

@@ -1,4 +1,3 @@
-
 from fastapi import FastAPI, HTTPException, Depends
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session
@@ -7,6 +6,11 @@ from datetime import datetime
 import models
 import schemas
 from database import SessionLocal, engine, Base
+import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 # Create tables
 Base.metadata.create_all(bind=engine)
@@ -129,4 +133,9 @@ def cancel_rental(rental_id: int, db: Session = Depends(get_db)):
 
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run(app, host="0.0.0.0", port=8000)
+    
+    # Get API configuration from environment variables
+    API_HOST = os.getenv("API_HOST", "0.0.0.0")
+    API_PORT = int(os.getenv("API_PORT", 8000))
+    
+    uvicorn.run(app, host=API_HOST, port=API_PORT)
