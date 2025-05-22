@@ -81,7 +81,12 @@ const RentalForm = ({ selectedCar }: RentalFormProps) => {
         <CardContent>
           <div className="text-center py-8">
             <p className="text-gray-500">Please select a car from the Browse Cars tab first.</p>
-            <Button variant="outline" className="mt-4" onClick={() => document.querySelector('[value="browse"]')?.click()}>
+            <Button variant="outline" className="mt-4" onClick={() => {
+              const browseTab = document.querySelector('[value="browse"]');
+              if (browseTab instanceof HTMLElement) {
+                browseTab.click();
+              }
+            }}>
               Browse Cars
             </Button>
           </div>
