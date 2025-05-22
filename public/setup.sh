@@ -1,3 +1,4 @@
+
 #!/bin/bash
 
 # Car Rental System Setup Script
@@ -8,8 +9,11 @@ if [ ! -f .env ]; then
     echo "Creating .env file with default configuration..."
     cat > .env << EOL
 # Database configuration
-DATABASE_TYPE=sqlite
-DATABASE_PATH=database/car_rental.db
+DATABASE_TYPE=mongodb
+MONGO_URI="mongodb+srv://{}:{}@project.zroupem.mongodb.net/?retryWrites=true&w=majority&appName=Project"
+MONGO_USER="USER"
+MONGO_PASSWORD="User123"
+DB_NAME="car_rental_system"
 
 # API configuration
 API_HOST=0.0.0.0
@@ -37,7 +41,7 @@ fi
 
 # Install Python dependencies
 echo "Installing Python dependencies..."
-pip install fastapi uvicorn sqlalchemy pydantic python-multipart pydantic-settings alembic pytest python-dotenv
+pip install fastapi uvicorn sqlalchemy pydantic python-multipart pydantic-settings alembic pytest python-dotenv pymongo
 
 # Initialize database
 echo "Setting up database..."
@@ -83,13 +87,18 @@ INSERT INTO rentals (car_id, user_name, start_date, end_date)
 VALUES (3, 'John Doe', '2025-05-20', '2025-05-25');
 EOL
 
-# Apply SQL to SQLite
-echo "Applying database schema..."
-if command -v sqlite3 &> /dev/null; then
-    sqlite3 backend/database/car_rental.db < backend/database/create_tables.sql
-    sqlite3 backend/database/car_rental.db < backend/database/seed_data.sql
+# Apply SQL to SQLite (only if using SQLite)
+echo "Checking database type..."
+if [ "$(grep -o "DATABASE_TYPE=sqlite" .env)" ]; then
+    echo "Using SQLite database, applying schema..."
+    if command -v sqlite3 &> /dev/null; then
+        sqlite3 backend/database/car_rental.db < backend/database/create_tables.sql
+        sqlite3 backend/database/car_rental.db < backend/database/seed_data.sql
+    else
+        echo "Warning: SQLite3 command not found. Please install sqlite3 or manually create the database."
+    fi
 else
-    echo "Warning: SQLite3 command not found. Please install sqlite3 or manually create the database."
+    echo "Not using SQLite, skipping SQLite schema application."
 fi
 
 # Install frontend dependencies
